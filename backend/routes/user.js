@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const { authMiddleware } = require("../middleware");
 const zod = require("zod");
-const { User } = require("../db");
+const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -41,6 +41,11 @@ router.post("/signup", async (req, res) => {
    })
 
    const userId = user._id;
+
+   await Account.create({
+    userId,
+    balance: 1 + Math.random() * 10000
+   })
 
    const token = jwt.sign({userId}, process.env.JWT_SECRET);
 
@@ -140,7 +145,7 @@ router.get("/bulk", authMiddleware, async (req, res) => {
             lastName: user.lastName
         }))
     })
-    
+
 })
 
 module.exports = router;
