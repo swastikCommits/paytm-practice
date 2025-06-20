@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const router = express.Router();
+const { authMiddleware } = require("../middleware");
 const zod = require("zod");
 const { User } = require("../db");
 const jwt = require("jsonwebtoken");
@@ -94,5 +95,30 @@ router.post("/signin", async (req, res) => {
 })
 
 
+
+const updateBody = zod.object({
+    password: zod.string().optional(),
+    firstName: zod.string().optional(),
+    lastName: zod.string().optional()
+})
+
+router.put("/", authMiddleware, async (req, res) => {
+
+    const { success } = updateBody.safeParse(req.body);
+    if(!success) {
+        return res.status(411).json({
+            message: "Incorrect inputs"
+        })
+    }
+
+    await User.updateOne(req.body, {
+        _id: req.userId
+    })
+
+    res.status(200).json({
+        message: "Updated successfully"
+    })
+
+})
 
 module.exports = router;
