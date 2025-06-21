@@ -1,5 +1,6 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/paytm-practice");
+mongoose.connect(process.env.MONGO_URI);
 
 const userSchema = new mongoose.Schema({
     username: {

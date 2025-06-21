@@ -67,17 +67,17 @@ router.post("/signin", async (req, res) => {
     const { success } = signInBody.safeParse(req.body);
     if(!success) {
         return res.status(411).json({
-            message: "Incorrect inputs"
+            message: "Incorrect inputs(zod)"
         })
     }
 
     const user = await User.findOne({
-        username: req.body.username, 
-        password: req.body.password
+        username: req.body.username
     });
+    
     if(!user) {
         return res.status(411).json({
-            message: "Incorrect inputs"
+            message: "Incorrect inputs(nahi mile db mein)"
         })
     }
 
@@ -94,8 +94,6 @@ router.post("/signin", async (req, res) => {
         message: "User signed in successfully",
         token: token
     })
-    
-
 })
 
 
@@ -111,7 +109,7 @@ router.put("/", authMiddleware, async (req, res) => {
     const { success } = updateBody.safeParse(req.body);
     if(!success) {
         return res.status(411).json({
-            message: "Incorrect inputs"
+            message: "Incorrect inputs shh"
         })
     }
 
