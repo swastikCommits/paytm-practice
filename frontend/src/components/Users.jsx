@@ -9,7 +9,6 @@ export const Users = () => {
     const [filter, setFilter] = useState("");
 
     useEffect(() => {
-        // Get token from localStorage
         const token = localStorage.getItem("token");
         
         axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter, {
@@ -59,7 +58,7 @@ function User({user}) {
 
         <div className="flex flex-col justify-center h-ful">
             <Button onClick={() => {
-                navigate("/send?id=" + user._id + "&name=" + user.firstName);
+                navigate(`/send?id=${user._id}&name=${user.firstName}`);
             }} label={"Send Money"} />
         </div>
     </div>
